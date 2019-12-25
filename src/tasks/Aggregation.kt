@@ -15,4 +15,8 @@ TODO: Write aggregation code.
  You can use 'Navigate | Test' menu action (note the shortcut) to navigate to the test.
 */
 fun List<User>.aggregate(): List<User> =
-    this
+    this.groupBy(User::login)
+        .map { (login, users) ->
+            User(login, users.sumBy { it.contributions })
+        }
+        .sortedByDescending(User::contributions)
